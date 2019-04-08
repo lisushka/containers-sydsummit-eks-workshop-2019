@@ -18,7 +18,7 @@ These labs are designed to be completed in sequence, and the full set of instruc
 
 * **Workshop Setup:** [Setup working environment on AWS](#lets-begin)
 * **Lab 1:** [Containerize the Mythical Mysfits monolith](#lab-1---containerize-the-mythical-mysfits-adoption-agency-platform)
-* **Lab 2:** [Deploy the container using EKS](Digital%20Modernization.adoc)
+* **Lab 2:** [Deploy the container using EKS](Lab2.adoc)
 * **Lab 3:** [Scale the adoption platform monolith with an ALB and an ECS Service](#lab-3---scale-the-adoption-platform-monolith-with-an-alb)
 * **Lab 4:** [Incrementally build and deploy more microservices with EKS](#lab-4-incrementally-build-and-deploy-each-microservice-using-fargate)
 * **Cleanup** [Put everything away nicely](#workshop-cleanup)
@@ -641,18 +641,18 @@ At this point, you should have a working container for the monolith codebase sto
 
 ![Lab 2 Architecture](images/02-arch.png)
 
-Go to: [*Lab 2*](https://github.com/kmhabib/containers-sydsummit-eks-workshop-2019/blob/master/amazon-ecs-mythicalmysfits-workshop/workshop-1/Digital%20Modernization.adoc)
+Go to: [*Lab 2*](Lab2.adoc)
 
 
 
 ### Checkpoint:
-Nice work!  You've created a task definition and are able to deploy the monolith container using ECS.  You've also enabled logging to CloudWatch Logs, so you can verify your container works as expected.
+Nice work!  You've created a kubernetes service and used a deployment the monolith container using ECS.  
 
 [*^ back to the top*](#monolith-to-microservices-with-docker-and-aws-fargate)
 
 ## Lab 3 - Scale the adoption platform monolith with an ALB
 
-T
+
 
 ![Lab 3 Architecture](images/03-arch.png)
 
