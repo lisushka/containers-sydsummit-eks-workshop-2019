@@ -224,7 +224,7 @@ Note the bucket name where your index.html file is and copy your new index.html 
 aws s3 cp index.html s3://mythical-mysfits-core-mythicalbucket-xxx/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers full=emailaddress=user@example.com
 ```
 
-image::S3Permissions.png[S3 permissions]
+image::images/S3Permissions.png[S3 permissions]
 
 Note: Your bucket name will be different. If the email address doesn't work, go to S3 console and give yourself full access to the file
 
