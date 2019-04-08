@@ -1,14 +1,14 @@
-Monolith to Microservices with Docker and AWS Fargate
+Monolith to Microservices with Docker and Amazon EKS
 ====================================================
 
 Welcome to the Mythical Mysfits team!
 
-In this lab, you'll build the monolithic Mythical Mysfits adoption platform with Docker, deploy it on Amazon ECS, and then break it down into a couple of more manageable microservices. Let's get started!
+In this lab, you'll build the monolithic Mythical Mysfits adoption platform with Docker, deploy it on Amazon EKS, and then break it down into a couple of more manageable microservices. Let's get started!
 
 ### Requirements:
 
 * AWS account - if you don't have one, it's easy and free to [create one](https://aws.amazon.com/).
-* AWS IAM account with elevated privileges allowing you to interact with CloudFormation, IAM, EC2, ECS, ECR, ELB/ALB, VPC, SNS, CloudWatch, Cloud9. [Learn how](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
+* AWS IAM account with elevated privileges allowing you to interact with CloudFormation, IAM, EC2, EKS, ECR, ELB/ALB, VPC, SNS, CloudWatch, DynamoDB, Cloud9. [Learn how](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
 * Familiarity with [Python](https://wiki.python.org/moin/BeginnersGuide/Programmers), [Docker](https://www.docker.com/), and [AWS](httpts://aws.amazon.com) - *not required but a bonus*.
 
 ### What you'll do:
@@ -18,9 +18,9 @@ These labs are designed to be completed in sequence, and the full set of instruc
 
 * **Workshop Setup:** [Setup working environment on AWS](#lets-begin)
 * **Lab 1:** [Containerize the Mythical Mysfits monolith](#lab-1---containerize-the-mythical-mysfits-adoption-agency-platform)
-* **Lab 2:** [Deploy the container using AWS Fargate](#lab-2---deploy-your-container-using-ecrecs)
+* **Lab 2:** [Deploy the container using EKS](#lab-2---deploy-your-container-using-ecrecs)
 * **Lab 3:** [Scale the adoption platform monolith with an ALB and an ECS Service](#lab-3---scale-the-adoption-platform-monolith-with-an-alb)
-* **Lab 4:** [Incrementally build and deploy more microservices with AWS Fargate](#lab-4-incrementally-build-and-deploy-each-microservice-using-fargate)
+* **Lab 4:** [Incrementally build and deploy more microservices with EKS](#lab-4-incrementally-build-and-deploy-each-microservice-using-fargate)
 * **Cleanup** [Put everything away nicely](#workshop-cleanup)
 
 ### Conventions:
@@ -59,10 +59,8 @@ You will be deploying infrastructure on AWS which will have an associated cost. 
 
 | Region | Launch Template |
 | ------------ | ------------- | 
-**Oregon** (us-west-2) | [![Launch Mythical Mysfits Stack into Oregon with CloudFormation](/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=mythical-mysfits-fargate&templateURL=https://s3.amazonaws.com/mythical-mysfits-website/fargate/core.yml)  
-**Ohio** (us-east-2) | [![Launch Mythical Mysfits Stack into Ohio with CloudFormation](/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/new?stackName=mythical-mysfits-fargate&templateURL=https://s3.amazonaws.com/mythical-mysfits-website/fargate/core.yml)  
-**Ireland** (eu-west-1) | [![Launch Mythical Mysfits Stack into Ireland with CloudFormation](/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=mythical-mysfits-fargate&templateURL=https://s3.amazonaws.com/mythical-mysfits-website/fargate/core.yml) 
-**Singapore** (ap-southeast-1) | [![Launch Mythical Mysfits Stack into Singapore with CloudFormation](/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks/new?stackName=mythical-mysfits-fargate&templateURL=https://s3.amazonaws.com/mythical-mysfits-website/fargate/core.yml)
+**Oregon** (us-west-2) | [![Launch Mythical Mysfits Stack into Oregon with CloudFormation](images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=mythical-mysfits-eks&templateURL=https://s3.amazonaws.com/cf-templates-krcf4scydp1b-us-west-2/modifiedcore.yml)  
+
 
 
 2. The template will automatically bring you to the CloudFormation Dashboard and start the stack creation process in the specified region. Give the stack a name that is unique within your account, and proceed through the wizard to launch the stack. Leave all options at their default values, but make sure to check the box to allow CloudFormation to create IAM roles on your behalf:
@@ -82,12 +80,12 @@ You will be deploying infrastructure on AWS which will have an associated cost. 
 
     On the left pane (Blue), any files downloaded to your environment will appear here in the file tree. In the middle (Red) pane, any documents you open will show up here. Test this out by double clicking on README.md in the left pane and edit the file by adding some arbitrary text. Then save it by clicking File and Save. Keyboard shortcuts will work as well. On the bottom, you will see a bash shell (Yellow). For the remainder of the lab, use this shell to enter all commands. You can also customize your Cloud9 environment by changing themes, moving panes around, etc. (if you like the dark theme, you can select it by clicking the gear icon in the upper right, then "Themes", and choosing the dark theme).
 
-4. Clone the Mythical Mysfits Workshop Repository:
+4. Clone the Mythical Mysfits Workshop EKS Repository:
 
     In the bottom panel of your new Cloud9 IDE, you will see a terminal command line terminal open and ready to use.  Run the following git command in the terminal to clone the necessary code to complete this tutorial:
 
     ```
-    $ git clone https://github.com/aws-samples/amazon-ecs-mythicalmysfits-workshop.git
+    $ git clone https://github.com/kmhabib/containers-sydsummit-eks-workshop-2019.git
     ```
 
     After cloning the repository, you'll see that your project explorer now includes the files cloned.
@@ -95,24 +93,219 @@ You will be deploying infrastructure on AWS which will have an associated cost. 
     In the terminal, change directory to the subdirectory for this workshop in the repo:
 
     ```
-    $ cd amazon-ecs-mythicalmysfits-workshop/workshop-1
+    $ cd containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1
     ```
 
 5. Run some additional automated setup steps with the `setup` script:
 
     ```
     $ script/setup
+    $ script/EKSPreReqs.sh
     ```
 
-    This script will delete some unneeded Docker images to free up disk space, populate a DynamoDB table with some seed data, upload site assets to S3, and install some Docker-related authentication mechanisms that will be discussed later. Make sure you see the "Success!" message when the script completes.
+    This first script will delete some unneeded Docker images to free up disk space, populate a DynamoDB table with some seed data, upload site assets to S3, and install some Docker-related authentication mechanisms that will be discussed later. Make sure you see the "Success!" message when the script completes. The second script will install **kubectl**, **aws-iam-authenticator**, **eksctl** and **kubectx**
 
+6. EKS related setup 
+---
+### Create an IAM role for your Workspace
+---
+1. Follow [this deep link to create an IAM role with Administrator access.](https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess)
+2. Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
+3. Confirm that **AdministratorAccess** is checked, then click **Next** to review.
+4. Enter **eksworkshop-admin** for the Name, and select **Create Role**
+![createrole](images/createrole.png)
+
+---
+### Attach the IAM role to your Workspace
+---
+
+1. Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=aws-cloud9-Project-mythical-mysfits-fargate-*;sort=desc:launchTime)
+2. Select the instance, then choose **Actions / Instance Settings / Attach/Replace IAM Role**
+![c9instancerole](images/c9instancerole.png)
+3. Choose **eksworkshop-admin** from the **IAM Role** drop down, and select **Apply**
+![c9attachrole](images/c9attachrole.png)
+
+
+---
+### Update IAM settings for your Workspace
+---
+
+<details>
+<summary>HINT</summary>
+
+**Cloud9 normally manages IAM credentials dynamically. This isn't currently compatible with
+the aws-iam-authenticator plugin, so we will disable it and rely on the IAM role instead.**
+
+</details>
+
+
+- Return to your workspace and click the sprocket, or launch a new tab to open the Preferences tab
+- Select **AWS SETTINGS**
+- Turn off **AWS managed temporary credentials**
+- Close the Preferences tab
+![c9disableiam](images/c9disableiam.png)
+
+- To ensure temporary credentials aren't already in place we will also remove
+any existing credentials file:
+```
+rm -vf ${HOME}/.aws/credentials
+```
+
+- We should configure our aws cli with our current region as default:
+```
+sudo yum install jq
+export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+echo "export AWS_REGION=${AWS_REGION}" >> ~/.bash_profile
+aws configure set default.region ${AWS_REGION}
+aws configure get default.region
+```
+### Validate the IAM role
+
+Use the [GetCallerIdentity](https://docs.aws.amazon.com/cli/latest/reference/sts/get-caller-identity.html) CLI command to validate that the Cloud9 IDE is using the correct IAM role.
+
+First, get the IAM role name from the AWS CLI.
+```
+INSTANCE_PROFILE_NAME=`basename $(aws ec2 describe-instances --filters Name=tag:Name,Values=aws-cloud9-${C9_PROJECT}-${C9_PID} | jq -r '.Reservations[0].Instances[0].IamInstanceProfile.Arn' | awk -F "/" "{print $2}")`
+aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME --query "InstanceProfile.Roles[0].RoleName" --output text
+```
+
+The output is the role name.
+
+```
+eksworkshop-admin
+```
+
+Compare that with the result of
+
+```
+aws sts get-caller-identity
+```
+
+#### VALID
+
+If the _Arn_ contains the role name from above and an Instance ID, you may proceed.
+
+```
+{
+    "Account": "123456789012",
+    "UserId": "AROA1SAMPLEAWSIAMROLE:i-01234567890abcdef",
+    "Arn": "arn:aws:sts::123456789012:assumed-role/eksworkshop-admin/i-01234567890abcdef"
+}
+or
+{
+    "Account": "123456789012",
+    "UserId": "AROA1SAMPLEAWSIAMROLE:i-01234567890abcdef",
+    "Arn": "arn:aws:sts::123456789012:assumed-role/modernizer-workshop-cl9/i-01234567890abcdef"
+}
+```
+
+#### INVALID
+
+If the *Arn* contains `TeamRole`, `MasterRole`, or does not match the role name, **DO NOT PROCEED**. Go back and confirm the steps on this page.
+
+```
+{
+    "Account": "123456789012",
+    "UserId": "AROA1SAMPLEAWSIAMROLE:i-01234567890abcdef",
+    "Arn": "arn:aws:sts::123456789012:assumed-role/TeamRole/MasterRole"
+}
+```
 
 ### Checkpoint:
-At this point, the Mythical Mysfits website should be available at the static site endpoint for the S3 bucket created by CloudFormation. You can visit the site at <code>http://<b><i>BUCKET_NAME</i></b>.s3-website.<b><i>REGION</i></b>.amazonaws.com/</code>. You can find the ***BUCKET_NAME*** in the CloudFormation outputs saved in the file `workshop-1/cfn-outputs.json`. Check that you can view the site, but there won't be much content visible yet until we launch the Mythical Mysfits monolith service:
+At this point, the Mythical Mysfits website should be available at the static site endpoint for the S3 bucket created by CloudFormation. You can visit the site at <code>http://<b><i>BUCKET_NAME</i></b>.s3-website.us-west-2.amazonaws.com/</code>. You can find the ***BUCKET_NAME*** in the CloudFormation outputs saved in the file `workshop-1/cfn-outputs.json`. Check that you can view the site, but there won't be much content visible yet until we launch the Mythical Mysfits monolith service:
 
 ![initial website](images/00-website.png)
 
-[*^ back to top*](#monolith-to-microservices-with-docker-and-aws-fargate)
+[*^ back to top*](#lets-begin)
+
+
+## Lab 0 - Launch your EKS Cluster
+
+---
+### Create an SSH key
+---
+
+
+Please run this command to generate SSH Key in Cloud9. This key will be used on the worker node instances to allow ssh access if necessary.
+
+```bash
+ssh-keygen
+```
+
+
+> Press `enter` 3 times to take the default choices
+
+
+Upload the public key to your EC2 region:
+
+```bash
+aws ec2 import-key-pair --key-name "eksworkshop" --public-key-material file://~/.ssh/id_rsa.pub
+```
+
+---
+### Now Launch an EKS Cluster
+---
+
+```
+eksctl create cluster --full-ecr-access --name=mythicalmysfits
+```
+
+You can expect to see an output like the one below.
+```
+eksctl create cluster --full-ecr-access --name=mythicalmysfits
+2018-08-27T21:36:50Z [ℹ]  setting availability zones to [us-west-2c us-west-2b us-west-2a]
+2018-08-27T21:36:50Z [ℹ]  importing SSH public key "/home/ec2-user/.ssh/eks-key.pub" as "eksctl-mythicalmysfits-20:bc:c5:14:ab:c1:6b:92:10:e5:92:c0:2a:9e:07:37"
+2018-08-27T21:36:50Z [ℹ]  creating EKS cluster "mythicalmysfits" in "us-west-2" region
+2018-08-27T21:36:50Z [ℹ]  creating VPC stack "EKS-mythicalmysfits-VPC"
+2018-08-27T21:36:50Z [ℹ]  creating ServiceRole stack "EKS-mythicalmysfits-ServiceRole"
+2018-08-27T21:37:31Z [✔]  created ServiceRole stack "EKS-mythicalmysfits-ServiceRole"
+2018-08-27T21:37:51Z [✔]  created VPC stack "EKS-mythicalmysfits-VPC"
+2018-08-27T21:37:51Z [ℹ]  creating control plane "mythicalmysfits"
+....
+```
+
+> **Take note of your cluster name and record it.**
+
+creates 3 private and 3 public subnets in this format: eksctl-mythicalmysfits-cluster/Subnet{Public|Private}USWEST2{A|B|C}
+
+> by default, 3 namespaces have been created
+```
+$ kubectl get namespaces
+NAME          STATUS    AGE
+default       Active    12m
+kube-public   Active    12m
+kube-system   Active    12m
+```
+verify 2x nodes have been created
+```
+kubectl get nodes 
+
+$ kubectl get nodes 
+NAME                                           STATUS    ROLES     AGE       VERSION
+ip-192-168-6-81.us-west-2.compute.internal     Ready     <none>    6m        v1.11.9
+ip-192-168-72-167.us-west-2.compute.internal   Ready     <none>    6m        v1.11.9
+```
+**Optional**
+
+<details>
+<summary>Installing Kubernetes Dashboard</summary>
+
+If you want to install the Kubernetes DASHBOARD:
+
+```
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+kubectl proxy &
+```
+
+Browse to: http://localhost:8080/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
+and enter the token generated from this output. Note: Make sure you've provided the right clustername.
+```
+aws-iam-authenticator token -i mythicalmysfits --token-only
+```
+</details>
+
 
 
 ## Lab 1 - Containerize the Mythical Mysfits adoption agency platform
@@ -443,11 +636,11 @@ At this point, you should have a working container for the monolith codebase sto
 
 [*^ back to the top*](#monolith-to-microservices-with-docker-and-aws-fargate)
 
-## Lab 2 - Deploy your container using ECR/ECS
+## Lab 2 - Deploy your container using ECR/EKS
 
 Deploying individual containers is not difficult.  However, when you need to coordinate many container deployments, a container management tool like ECS can greatly simplify the task (no pun intended).
 
-ECS refers to a JSON formatted template called a [Task Definition](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html) that describes one or more containers making up your application or service.  The task definition is the recipe that ECS uses to run your containers as a **task** on your EC2 instances or AWS Fargate.
+EKS refers to a JSON formatted template called a [Task Definition](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html) that describes one or more containers making up your application or service.  The task definition is the recipe that ECS uses to run your containers as a **task** on your EC2 instances or AWS Fargate.
 
 <details>
 <summary>INFO: What is a task?</summary>
@@ -462,7 +655,7 @@ In this lab, you will create a task definition to serve as a foundation for depl
 
 ![Lab 2 Architecture](images/02-arch.png)
 
-*Note: You will use the AWS Management Console for this lab, but remember that you can programmatically accomplish the same thing using the AWS CLI, SDKs, or CloudFormation.*
+
 
 ### Instructions:
 
@@ -623,7 +816,7 @@ Here's what you will be implementing:
 
 ![Lab 4](images/04-arch.png)
 
-*Note: The green tasks denote the monolith and the orange tasks denote the "like" microservice
+*Note: The green tasks denote the monolith and the orange tasks denote the "like" microservice*
 
     
 As with the monolith, you'll be using [Fargate](https://aws.amazon.com/fargate/) to deploy these microservices, but this time we'll walk through all the deployment steps for a fresh service.
@@ -831,3 +1024,4 @@ Delete manually created resources throughout the labs:
 * ALBs and associated target groups
 
 Finally, [delete the CloudFormation stack](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html) launched at the beginning of the workshop to clean up the rest.  If the stack deletion process encountered errors, look at the Events tab in the CloudFormation dashboard, and you'll see what steps failed.  It might just be a case where you need to clean up a manually created asset that is tied to a resource goverened by CloudFormation.
+
