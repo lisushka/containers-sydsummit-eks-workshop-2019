@@ -115,7 +115,8 @@ kubectl apply -f monolith-app.yaml
 +
 [.output]
 ....
-
+deployment.apps/mythical-mysfits-eks created
+service/mythical-mysfits-eks created
 ....
 +
 7. As you can see above this manifest created and configured 1 deployment and 1 service for your monolith app..
@@ -146,10 +147,9 @@ kubectl get pods --watch
 +
 [.output]
 ....
-NAME                        READY     STATUS              RESTARTS   AGE
-frontend-869db5db6b-ht4h8   0/1       Init:0/1            0          3m
-frontend-869db5db6b-j5nfj   0/1       Init:0/1            0          3m
-postgres-678864b7-vs5zj     0/1       ContainerCreating   5          3m
+AME                                       READY     STATUS    RESTARTS   AGE
+mythical-mysfits-eks-7c8d764676-2zhfd      1/1       Running   0          21s
+mythical-mysfits-eks-7c8d764676-hrs85      1/1       Running   0          21s
 ....
 +
 9. Once the *STATUS* changes to *Running* for  your container we can
@@ -163,9 +163,10 @@ kubectl get services -o wide
 +
 [.output]
 ....
-NAME       TYPE           CLUSTER-IP      EXTERNAL-IP                                                               PORT(S)                                     AGE
-frontend   LoadBalancer   10.100.20.251   ac7059d97a51611e88f630213e88d018-2093299179.us-west-2.elb.amazonaws.com   80:30327/TCP,443:32177/TCP,9990:30543/TCP   6m
-postgres   ClusterIP      None            <none>                                                                    5432/TCP                                    6m
+NAME                      TYPE           CLUSTER-IP       EXTERNAL-IP                                 
+mythical-mysfits-eks      LoadBalancer   10.100.159.2     aea2e66c759f711e994690e7be669691-645977634.us-west-2.elb.amazonaws.com  
+PORT(S)        AGE       SELECTOR 
+80:32016/TCP   1m        app=mythical-mysfits-eks 
 ....
 +
 10. Here we can see that we're exposing the *frontend* using an ELB which is
@@ -181,7 +182,21 @@ curl -m3 -v $ELB
 ----
 +
 [.output]
-hnothing to see here, try /mysfits
+....
+* Rebuilt URL to: aea2e66c759f711e994690e7be669691-645977634.us-west-2.elb.amazonaws.com/                                                                      *   Trying 34.216.204.210...                                                                                                                                   
+* TCP_NODELAY set                                                                                                                                              
+* Connected to aea2e66c759f711e994690e7be669691-645977634.us-west-2.elb.amazonaws.com (34.216.204.210) port 80 (#0)                                            
+> GET / HTTP/1.1                                                                                                                                               
+> Host: aea2e66c759f711e994690e7be669691-645977634.us-west-2.elb.amazonaws.com                                                                                 
+> User-Agent: curl/7.61.1                                                                                                                                      
+> Accept: */*                                                                                                                                                  
+>                                                                                                                                                              
+* HTTP 1.0, assume close after body                                                                                                                            < HTTP/1.0 200 OK                                                                                                                                              
+< Content-Type: application/json                                                                                                                               < Access-Control-Allow-Origin: *                                                                                                                               
+< Content-Length: 78                                                                                                                                           < Server: Werkzeug/0.15.2 Python/2.7.15rc1                                                                                                                     
+< Date: Mon, 08 Apr 2019 12:19:02 GMT                                                                                                                          <                                                                                                                                                              
+{                                                                                                                                                                "message": "Nothing here, used for health check. Try /mysfits instead."                                                                                      
+}                                                                                                                                                              * Closing connection 0                               
 ....
 +
 
