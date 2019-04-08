@@ -197,8 +197,8 @@ curl -m3 -v $ELB
 < Content-Type: application/json                                                                                       Access-Control-Allow-Origin:                                                                                              
 < Content-Length: 78     
 < Server: Werkzeug/0.15.2Python/2.7.15rc1                                                                                                                     
-< Date: Mon, 08 Apr 2019 12:19:02 GMT message: 
-Nothing here, used for health check. Try /mysfits instead.    
+< Date: Mon, 08 Apr 2019 12:19:02 GMT 
+"message": "Nothing here, used for health check. Try /mysfits instead." 
 
 * Closing connection 0                               
 ....
@@ -231,5 +231,13 @@ Note: Your bucket name will be different. If the email address doesn't work, go 
 For e.g. http://mythical-mysfits-core-mythicalbucket-6b9pvvt40bqj.s3-website.us-west-2.amazonaws.com/
 
 if you see all the mythical mysfits show up now, SUCCESS!! First hurdle done
+
+Now Delete your deployment (verify by going to the console and checking ELB is deleted)
+```
+$ kubectl delete -f monolith-app.yaml                     
+deployment.apps "mythical-mysfits-eks" deleted    
+service "mythical-mysfits-eks" deleted  
+```                                                                                      
+
 
 Now that we have our containers deployed to Amazon EKS we can continue with the workshop. Go https://github.com/kmhabib/containers-sydsummit-eks-workshop-2019/blob/master/amazon-ecs-mythicalmysfits-workshop/README.md[back] and start lab 3. 
