@@ -49,213 +49,76 @@ https://kubernetes.io/docs/concepts/workloads/controllers/deployment/[here]
 +
 [source,shell]
 ----
-cd ~/environment/aws-modernization-workshop/modules/container-orchestration-eks
+cd ~/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/Kubernetes/mono
 ----
 +
-3. Open the *petstore-eks-manifest.yaml* file by double clicking the filename
+3. Open the *monolith-app.yaml* file by double clicking the filename
 in the lefthand navigation in Cloud9.
 
 4. The file has the following contents:
 +
-.petstore-eks-manifest.yaml
+.monolith-app.yaml
 [source,yaml]
 ----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mythical-mysfits-eks
+  labels:
+    app: mythical-mysfits-eks
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mythical-mysfits-eks
+  template:
+    metadata:
+      labels:
+        app: mythical-mysfits-eks
+    spec:
+      containers:
+        - name: mythical-mysfits-eks
+          image: *<YourAccountID>*.dkr.ecr.us-west-2.amazonaws.com/mythic-mono-XXX:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: DDB_TABLE_NAME
+              value: Table-mythical-mysfits-core
+            - name: AWS_DEFAULT_REGION
+              value: us-west-2
+---
 apiVersion: v1
-kind: List
-items:
-- apiVersion: storage.k8s.io/v1
-  kind: StorageClass
-  metadata:
-    name: gp2
-    annotations:
-      "storageclass.kubernetes.io/is-default-class": "true"
-  provisioner: kubernetes.io/aws-ebs
-  parameters:
-    type: gp2
-  reclaimPolicy: Retain
-  mountOptions:
-    - debug
-    
-- apiVersion: v1
-  kind: Namespace
-  metadata:
-    name: petstore
-
-- kind: PersistentVolume
-  apiVersion: v1
-  metadata:
-    name: postgres-pv-volume
-    namespace: petstore
-    labels:
-      type: local
-  spec:
-    storageClassName: gp2
-    capacity:
-      storage: 20Gi
-    accessModes:
-      - ReadWriteOnce
-    hostPath:
-      path: "/mnt/data"
-
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: postgres-pv-claim
-    namespace: petstore
-  spec:
-    storageClassName: gp2
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 20Gi
-
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: postgres
-    namespace: petstore
-  spec:
-    ports:
-    - port: 5432
-    selector:
-      app: postgres
-    clusterIP: None
-
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: postgres
-    namespace: petstore
-  spec:
-    selector:
-      matchLabels:
-        app: postgres
-    strategy:
-      type: Recreate
-    template:
-      metadata:
-        labels:
-          app: postgres
-      spec:
-        containers:
-        - image: <YourAccountID>.dkr.ecr.us-west-2.amazonaws.com/petstore_postgres:latest
-          name: postgres
-          env:
-          - name: POSTGRES_PASSWORD
-            value: password
-          - name: POSTGRES_DB
-            value: petstore
-          - name: POSTGRES_USER
-            value: admin
-          ports:
-          - containerPort: 5432
-            name: postgres
-          volumeMounts:
-          - name: postgres-persistent-storage
-            mountPath: /var/lib/postgresql/data
-            subPath: petstore
-        volumes:
-        - name: postgres-persistent-storage
-          persistentVolumeClaim:
-            claimName: postgres-pv-claim
-
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: frontend
-    namespace: petstore
-  spec:
-    selector:
-      app: frontend
-    ports:
-    - port: 80
-      targetPort: http-server
-      name: http
-    - port: 9990
-      targetPort: wildfly-cord
-      name: wildfly-cord
-    type: LoadBalancer
-
-- apiVersion: apps/v1beta1
-  kind: Deployment
-  metadata:
-    name: frontend
-    namespace: petstore
-    labels:
-      app: frontend
-  spec:
-    replicas: 2
-    selector:
-      matchLabels:
-        app: frontend
-    template:
-      metadata:
-        labels:
-          app: frontend
-      spec:
-        initContainers:
-        - name: init-frontend
-          image: <YourAccountID>.dkr.ecr.us-west-2.amazonaws.com/petstore_postgres:latest
-          command: ['sh', '-c',
-                    'until pg_isready -h postgres.petstore.svc -p 5432;
-                    do echo waiting for database; sleep 2; done;']
-        containers:
-        - name: frontend
-          image: <YourAccountID>.dkr.ecr.us-west-2.amazonaws.com/petstore_frontend:latest
-          resources:
-            requests:
-              memory: "512m"
-              cpu: "512m"
-          ports:
-          - name: http-server
-            containerPort: 8080
-          - name: wildfly-cord
-            containerPort: 9990
-          env:
-          - name: DB_URL
-            value: "jdbc:postgresql://postgres.petstore.svc:5432/petstore?ApplicationName=applicationPetstore"
-          - name: DB_HOST
-            value: postgres.petstore.svc
-          - name: DB_PORT
-            value: "5432"
-          - name: DB_NAME
-            value: petstore
-          - name: DB_USER
-            value: admin
-          - name: DB_PASS
-            value: password
+kind: Service
+metadata:
+  name: mythical-mysfits-eks
+spec:
+  type: LoadBalancer
+  selector:
+    app: mythical-mysfits-eks
+  ports:
+   -  protocol: TCP
+      port: 80
+      targetPort: 80 
 ----
 +
-5. Replace the *<YourAccountID>* placeholders with your https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html[Account ID] and save the file.
-+
-[source,shell]
-----
-ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account')
-sed -i "s/<YourAccountID>/${ACCOUNT_ID}/" petstore-eks-manifest.yaml
+5. Replace the image value with the exact ECR ARN for your monolith image that you built in the previous lab. 
 ----
 +
 6. Apply your manifest by running this command in your Cloud9 terminal:
 +
 [source,shell]
 ----
-kubectl apply -f petstore-eks-manifest.yaml
+kubectl apply -f monolith-app.yaml
 ----
 +
 [.output]
 ....
-namespace/petstore created
-persistentvolume/postgres-pv-volume configured
-persistentvolumeclaim/postgres-pv-claim created
-service/postgres created
-deployment.apps/postgres created
-service/frontend created
-deployment.apps/frontend created
+
 ....
 +
-7. As you can see above this manifest created and configured several components
-   in your Kubernetes cluster, we created a *namespace*, *persistentvolume*,
-   *persistentvolumeclaim*, 2 *services*, and 2 *deployments*.
+7. As you can see above this manifest created and configured 1 deployment and 1 service for your monolith app..
 +
 [options="header"]
 |=======================
@@ -278,7 +141,7 @@ ReplicaSets.
 +
 [source,shell]
 ----
-kubectl get pods --namespace petstore --watch
+kubectl get pods --watch
 ----
 +
 [.output]
@@ -289,13 +152,13 @@ frontend-869db5db6b-j5nfj   0/1       Init:0/1            0          3m
 postgres-678864b7-vs5zj     0/1       ContainerCreating   5          3m
 ....
 +
-9. Once the *STATUS* changes to *Running* for all 3 of your containers we can
+9. Once the *STATUS* changes to *Running* for  your container we can
    then load the services and navigate to the exposed application (you will
    need to ctrl-c since its watching).
 +
 [source,shell]
 ----
-kubectl get services --namespace petstore -o wide
+kubectl get services -o wide
 ----
 +
 [.output]
@@ -309,6 +172,40 @@ postgres   ClusterIP      None            <none>                                
    available at the *EXTERNAL-IP* field. Copy and paste this into a new browser
    tab.
 
-11. Navigate to that URL with `/applicationPetstore` to see the running application
+11. Issue a curl command
++
+[source,shell]
+----
+ELB=$(kubectl get service mythical-mysfits-eks -o json | jq -r '.status.loadBalancer.ingress[].hostname')
+curl -m3 -v $ELB
+----
++
+[.output]
+hnothing to see here, try /mysfits
+....
++
+
+12. if you see the text saying, "nothing to see here, try /mysfits", then your pod/container is up and running. Do a curl again and append /mysfits after the previous curl command. You should see the output from the DynamoDB table. 
+
+13. Navigate to cd /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web .
+
+14. Take the ELB URL and search for "mysfitsApiEndpoint" in the index.html file and replace the ELB DNS name without any trailing "/". So it should be like:
+"http://a72403c1a586111e994690e7be669691-148203215.us-west-2.elb.amazonaws.com"
+
+15. Now upload this new file to S3. Make sure you are in this directory: /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web
+```
+aws s3 ls
+```
+Note the bucket name where your index.html file is and copy your new index.html granting read permissions to everyone and full access to you (give your account email)
+```
+aws s3 cp index.html s3://mythical-mysfits-core-mythicalbucket-xxx/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers full=emailaddress=user@example.com
+```
+
+Note: Your bucket name will be different. If the email address doesn't work, go to S3 console and give yourself full access to the file
+
+16. now go and see your S3 website, http://BUCKET_NAME.s3-website.us-west-2.amazonaws.com/
+e.g: http://mythical-mysfits-core-mythicalbucket-6b9pvvt40bqj.s3-website.us-west-2.amazonaws.com/
+
+if you see all the mythical mysfits show up now, SUCCESS!! First hurdle done
 
 Now that we have our containers deployed to Amazon EKS we can continue with the workshop.
