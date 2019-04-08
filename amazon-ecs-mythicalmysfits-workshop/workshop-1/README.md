@@ -19,7 +19,7 @@ These labs are designed to be completed in sequence, and the full set of instruc
 * **Workshop Setup:** [Setup working environment on AWS](#lets-begin)
 * **Lab 1:** [Containerize the Mythical Mysfits monolith](#lab-1---containerize-the-mythical-mysfits-adoption-agency-platform)
 * **Lab 2:** [Deploy the container using EKS](Lab2.adoc)
-* **Lab 3:** [Incrementally build and deploy more microservices with EKS](#Lab3.md)
+* **Lab 3:** [Incrementally build and deploy more microservices with EKS](Lab3.md)
 * **Cleanup** [Put everything away nicely](#workshop-cleanup)
 
 ### Conventions:
