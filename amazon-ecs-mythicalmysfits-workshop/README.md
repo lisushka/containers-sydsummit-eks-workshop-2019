@@ -22,14 +22,15 @@ That's why we've hired you to be our first Full Stack Engineer. We need a more s
 This is a part of a single workshop running at AWS Sydney Summit. You can either run the ECS/Fargate lworkshop or the EKS workshop which is this one:
 
 * [ECS and Fargate Workshop](https://github.com/vanchee/containers-sydsummit-workshop-2019/tree/master/all-lab-modules/lab2a-option1-ecs-labs)
-* [EKS workshop DevSecOps with Docker and AWS Fargate](workshop-1/)
+* [EKS workshop](workshop-1/)
 
 
 ### Session Times
 
 These session times and locations are provided as a reference. Check your session guide for the latest details.
 
-**????: Monolith to Microservices with Docker and AWS Fargate**
+**Session #TBD: Monolith to Microservices with Docker and AWS Fargate**
+
 - Wednesday May 1st, 11:15am -- 2:15pm
 - WORKSHOP ROOM 2
 
