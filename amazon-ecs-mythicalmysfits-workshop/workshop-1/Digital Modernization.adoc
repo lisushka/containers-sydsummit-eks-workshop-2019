@@ -103,9 +103,9 @@ spec:
       targetPort: 80 
 ----
 +
+
 5. Replace the image value with the exact ECR ARN for your monolith image that you built in the previous lab. 
-----
-+
+
 6. Apply your manifest by running this command in your Cloud9 terminal:
 +
 [source,shell]
