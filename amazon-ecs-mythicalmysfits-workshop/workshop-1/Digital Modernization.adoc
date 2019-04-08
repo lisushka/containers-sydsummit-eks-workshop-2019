@@ -191,12 +191,15 @@ curl -m3 -v $ELB
 > User-Agent: curl/7.61.1                                                                                                                                      
 > Accept: */*                                                                                                                                                  
 >                                                                                                                                                              
-* HTTP 1.0, assume close after body                                                                                                                            < HTTP/1.0 200 OK                                                                                                                                              
-< Content-Type: application/json                                                                                                                               < Access-Control-Allow-Origin: *                                                                                                                               
-< Content-Length: 78                                                                                                                                           < Server: Werkzeug/0.15.2 Python/2.7.15rc1                                                                                                                     
-< Date: Mon, 08 Apr 2019 12:19:02 GMT                                                                                                                          <                                                                                                                                                              
-{                                                                                                                                                                "message": "Nothing here, used for health check. Try /mysfits instead."                                                                                      
-}                                                                                                                                                              * Closing connection 0                               
+* HTTP 1.0, assume close after body                                                                                                                            
+< HTTP/1.0 200 OK       
+< Content-Type: application/json                                                                                       Access-Control-Allow-Origin:                                                                                              
+< Content-Length: 78     
+< Server: Werkzeug/0.15.2Python/2.7.15rc1                                                                                                                     
+< Date: Mon, 08 Apr 2019 12:19:02 GMT   
+{                                                                                                                                       "message": "Nothing here, used for health check. Try /mysfits instead."    
+}   
+* Closing connection 0                               
 ....
 +
 
