@@ -62,17 +62,75 @@ As with the monolith, you'll be using [EKS](https://aws.amazon.com/eks/) to depl
 
 5. Before we deploy this microservice, we'll go into the details of setting up the [ALB Ingress Controller](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/). 
 
- Kubernetes Ingress is an api object that allows you manage external (or) internal HTTP[s] access to Kubernetes services running in a cluster. Amazon Elastic Load Balancing Application Load Balancer (ALB) is a popular AWS service that load balances incoming traffic at the application layer (layer 7) across multiple targets, such as Amazon EC2 instances, in a region. ALB supports multiple features including host or path based routing, TLS (Transport layer security) termination, WebSockets, HTTP/2, AWS WAF (web application firewall) integration, integrated access logs, and health checks.
+>Kubernetes Ingress is an api object that allows you manage external (or) internal HTTP[s] access to Kubernetes services running in a cluster. Amazon Elastic Load Balancing Application Load Balancer (ALB) is a popular AWS service that load balances incoming traffic at the application layer (layer 7) across multiple targets, such as Amazon EC2 instances, in a region. ALB supports multiple features including host or path based routing, TLS (Transport layer security) termination, WebSockets, HTTP/2, AWS WAF (web application firewall) integration, integrated access logs, and health checks.
 
-The AWS ALB Ingress controller is a controller that triggers the creation of an ALB and the necessary supporting AWS resources whenever a Kubernetes user declares an Ingress resource on the cluster. The Ingress resource uses the ALB to route HTTP[s] traffic to different endpoints within the cluster. The AWS ALB Ingress controller works on any Kubernetes cluster including Amazon Elastic Container Service for Kubernetes (EKS). For details on how the Kubernetes Ingress works with aws-alb-ingress-controller, please [read](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/) this link. 
+>The AWS ALB Ingress controller is a controller that triggers the creation of an ALB and the necessary supporting AWS resources whenever a Kubernetes user declares an Ingress resource on the cluster. The Ingress resource uses the ALB to route HTTP[s] traffic to different endpoints within the cluster. The AWS ALB Ingress controller works on any Kubernetes cluster including Amazon Elastic Container Service for Kubernetes (EKS). For details on how the Kubernetes Ingress works with aws-alb-ingress-controller, please [read](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/) this link. 
 
-[alb-ingress](images/ALBIngress.png)
+![alb-ingress](images/ALBIngress.png)
 
+- Steps to deploy the AWS ALB Ingress controller
+    1. Install ekcsctl (we have already done this, so skip)
+    2. Create an IAM policy to give the ingress controller the right permissions:
+       - Go to the IAM Console and choose the section Policies.
+       - Select Create policy.
+       - Embed the contents of the template [iam-policy.json](https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/iam-policy.json) in the JSON section.
+       - **Review policy** and save as “ingressController-iam-policy”
+    3. Attach the IAM policy to the EKS worker nodes:
+       - Go back to the IAM Console.
+       - Choose the section **Roles** and search for the NodeInstanceRole of your EKS worker node. Example: eksctl-attractive-gopher-NodeInstanceRole-xxxxxx
+       - Attach policy “ingressController-iam-policy.”
+    4. Deploy the RBAC Roles and RoleBinding needed by AWS ALB ingress controller:
+       ```kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/rbac-role.yaml```
+    5. Modify the *alb-ingress-controller.yaml* file in the **Kubernetes/micro** folder and edit the cluster name to your cluster name (that you recorded in Lab0 when setting up EKS cluster)
+    6. Deploy the AWS ALB Ingress controller YAML:
+       ```kubectl apply -f alb-ingress-controller.yaml```
+    7. Verify that the deployment was successful and the controller started. 
+       ```kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)```
+       you should see the following output: 
+        ```
+            -------------------------------------------------------------------------------
+            AWS ALB Ingress controller
+              Release: v1.0.0
+              Build: git-6ee1276
+              Repository: https://github.com/kubernetes-sigs/aws-alb-ingress-controller
+            -------------------------------------------------------------------------------
+        ```
 
+6. Still at this point, you'd notice on the console that the ALB has not spun up. Now we'll spin up the ALB giving the path to the two microservices that we have created (like and no like) and then deploy our alb-ingress-controller
+  ```
+   kubectl apply -f mythical-ingress.yaml 
+   kubectl get ingress/mythical-mysfits-eks
+  ```
 
-7. Once the new like service is deployed, test liking a Mysfit again by visiting the website. Check the CloudWatch logs again and make sure that the like service now shows a "Like processed." message. If you see this, you have succesfully factored out like functionality into the new microservice!
+7. Get the DNS name of the alb (kubectl get ingress) or by issuing:
+```
+kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
+```
+(Example: 07f66c03-default-mythicalm-761d-1712518784.us-west-2.elb.amazonaws.com) and modify the index.html file and upload to s3 again
+aws s3 cp ../../workshop-1/web/index.html s3://mythical-mysfits-core-mythicalbucket-xxx/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+ALB can take 5-10 mins to be in-service
 
-8. If you have time, you can now remove the old like endpoint from the monolith now that it is no longer seeing production use.
+8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. 
+```
+- name: MONOLITH_URL
+  value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com
+```
+9. Now deploy both the "like" and "nolike" services. 
+```
+kubectl apply -f likeservice-app.yaml 
+kubectl apply -f nolikeservice-app
+```
+
+10. Check your ALB on the console, it will take another 2 minutes or so for these two backend services to show as "healthy" in the target group.
+
+11. Once the state of the pods is showing as healthy, open the log files to each of the pods:
+```
+kubectl get pods
+kubectl logs <pod name 1> (there should be 4 pods)
+```
+12. Navigate to the S3 URL and press the like button, as soon as you press the button, you would see the POST with a success of 200 show up and with the message "Like processed." In the next step, we will setup Fluentd with CloudWatch and you can observe the message show up in CloudWatch.
+
+13. If you have time, you can now remove the old like endpoint from the monolith now that it is no longer seeing production use.
 
     Go back to your Cloud9 environment where you built the monolith and like service container images.
 
@@ -92,7 +150,7 @@ The AWS ALB Ingress controller is a controller that triggers the creation of an 
 
     *Tip: if you're not familiar with Python, you can comment out a line by adding a hash character, "#", at the beginning of the line.*
 
-9. Build, tag and push the monolith image to the monolith ECR repository.
+14. Build, tag and push the monolith image to the monolith ECR repository.
 
     Use the tag `nolike2` now instead of `nolike`.
 
@@ -106,7 +164,7 @@ The AWS ALB Ingress controller is a controller that triggers the creation of an 
 
     ![ECR nolike image](images/04-ecr-nolike2.png)
 
-10. Now make one last deployment for the monolith to refer to this new container image URI (this process should be familiar now, and you can probably see that it makes sense to leave this drudgery to a CI/CD service in production), update the monolith service to use the new deployment, and make sure the app still functions as before.
+15. Now make one last deployment for the monolith to refer to this new container image URI (this process should be familiar now, and you can probably see that it makes sense to leave this drudgery to a CI/CD service in production), update the monolith service to use the new deployment, and make sure the app still functions as before.
 
 ### Checkpoint:
 Congratulations, you've successfully rolled out the like microservice from the monolith.  If you have time, try repeating this lab to break out the adoption microservice.  Otherwise, please remember to follow the steps below in the **Workshop Cleanup** to make sure all assets created during the workshop are removed so you do not see unexpected charges after today.
