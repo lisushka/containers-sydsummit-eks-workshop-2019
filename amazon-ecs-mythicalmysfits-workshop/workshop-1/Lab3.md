@@ -121,8 +121,9 @@ kubectl apply -f likeservice-app.yaml
 kubectl apply -f nolikeservice-app
 ```
 
-10. Check your ALB on the console, it will take another 2 minutes or so for these two backend services to show as "healthy" in the target group.
+10. Check your ALB on the console, it will take another 2 minutes or so for these two backend services to show as "healthy" in the target group. 
 
+![ALB Rules](images/ALBRules.png)
 11. Once the state of the pods is showing as healthy, open the log files to each of the pods:
 ```
 kubectl get pods
