@@ -60,7 +60,11 @@ As with the monolith, you'll be using [EKS](https://aws.amazon.com/eks/) to depl
 
 4. Navigate to Kubernetes/micro folder `/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/Kubernetes`. 
 
-Now, just as in Lab 2, create a new revision of the kubernetes object  (this time pointing to the "nolike" version of the container image), AND update the monolith service to use this revision. Call this object nolike-app.yaml (there should be a sample file in the folder)
+Now, just as in Lab 2, create a new revision of the kubernetes object  (this time pointing to the "nolike" version of the container image), AND update the monolith service to use this revision. 
+Call this object nolike-app.yaml (there should be a sample file in the folder)
+
+*Note: If you are using the nolike-app.yaml file, remember to update the image file ECR URI and check DDB Table name.
+
 
 5. Before we deploy this microservice, we'll go into the details of setting up the [ALB Ingress Controller](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/). 
 
