@@ -13,7 +13,7 @@ echo 'export PATH=$HOME/bin:$PATH' >>~/.bashrc
 
 # Install kubectl, if absent
 if ! type kubectl >/dev/null 2>&1; then
-	curl -o "kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/$(uname -s)/amd64/kubectl"
+	curl -o kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/$(uname -s)/amd64/kubectl"
 	chmod +x ./kubectl
 	cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
 	echo 'kubectl installed'
