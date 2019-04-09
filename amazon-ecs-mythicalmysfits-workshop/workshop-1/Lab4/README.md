@@ -22,7 +22,7 @@ Validate that the policy is attached to the role:
 aws iam get-role-policy --role-name $ROLE_NAME --policy-name Logs-Policy-For-Worker
 ```
 
-The Fluentd log agent configuration is located in the Kubernetes ConfigMap. Fluentd will be deployed as a DaemonSet, i.e. one pod per worker node. In our case, a 3 node cluster is used and so 3 pods will be shown in the output when we deploy.
+The Fluentd log agent configuration is located in the Kubernetes ConfigMap. Fluentd will be deployed as a DaemonSet, i.e. one pod per worker node. In our case, a 2 node cluster is used and so 4 pods will be shown in the output when we deploy, since we have 2 pods per node.
 
 Edit `fluentd.yaml` on line 196, setting the `REGION` and `CLUSTER_NAME` environment variable values.
 
