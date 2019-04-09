@@ -1,20 +1,5 @@
 = Lab 2: Deploy the container using EKS
 
-== Container Orchestration
-
-****
-*Expected Outcome:*
-
-* 200 level usage of Amazon EKS
-
-*Lab Requirements:*
-
-* an Amazon Elastic Container Service for Kubernetes Cluster (EKS)
-
-*Average Lab Time:*
-20-30 minutes
-****
-
 === Introduction
 
 In this module, we're going to deploy applications using http://aws.amazon.com/eks/[Amazon Elastic Container Service for Kubernetes (Amazon EKS)].
@@ -236,7 +221,10 @@ if you see all the mythical mysfits show up now, SUCCESS!! First hurdle done
 
 Now Delete your deployment (verify by going to the console and checking ELB is deleted)
 ```
-$ kubectl delete -f monolith-app.yaml                     
+$ kubectl delete -f monolith-app.yaml           
+
+Output will be as below.
+
 deployment.apps "mythical-mysfits-eks" deleted    
 service "mythical-mysfits-eks" deleted  
 ```                                                                                      
