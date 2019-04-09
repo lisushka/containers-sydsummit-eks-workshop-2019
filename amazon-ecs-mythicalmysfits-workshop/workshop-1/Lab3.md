@@ -64,7 +64,7 @@ Now, just as in Lab 2, create a new revision of the kubernetes object (this time
 
 Call this object nolike-app.yaml (there should be a sample file in the folder)
 
-#Note: If you are using the nolike-app.yaml file, remember to update the image file ECR URI and check DDB Table name.
+# Note: If you are using the nolike-app.yaml file, remember to update the image file ECR URI and check DDB Table name.
 
 5. Before we deploy this microservice, we'll go into the details of setting up the [ALB Ingress Controller](https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/). 
 
