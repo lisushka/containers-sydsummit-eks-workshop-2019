@@ -54,8 +54,8 @@ As with the monolith, you'll be using [EKS](https://aws.amazon.com/eks/) to depl
     <pre>
     $ cd app/like-service
     $ docker build -t like-service .
-    $ docker tag like-service:latest <b><i>ECR_REPOSITORY_URI</i></b>:latest
-    $ docker push <b><i>ECR_REPOSITORY_URI</i></b>:latest
+    $ docker tag like-service:latest <b><i>ECR_REPOSITORY_URI</i></b>:like
+    $ docker push <b><i>ECR_REPOSITORY_URI</i></b>:like
     </pre>
 
 4. Navigate to Kubernetes/micro folder `/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/Kubernetes`. 
