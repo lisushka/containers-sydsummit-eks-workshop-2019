@@ -267,9 +267,10 @@ eksctl create cluster --full-ecr-access --name=mythicalmysfits
 ....
 ```
 
-> **Go start Lab 1Take note of your cluster name and record it.** . 
+> **Take note of your cluster name and record it.** 
+
 > **Cluster can take from 10-20 minutes. Go start Lab 1 where you're going to dockerize the image in a new Cloud9 Terminal shell and come back and verify successful creation of cluster once you're done there**. 
-creates 3 private and 3 public subnets in this format: eksctl-mythicalmysfits-cluster/Subnet{Public|Private}USWEST2{A|B|C}
+
 
 > by default, 3 namespaces have been created
 ```
