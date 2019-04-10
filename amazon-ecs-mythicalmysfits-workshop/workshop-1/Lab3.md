@@ -120,7 +120,7 @@ aws s3 cp ../../workshop-1/web/index.html s3://mythical-mysfits-core-mythicalbuc
 ```
 ALB can take 5-10 mins to be in-service
 
-8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. 
+8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. Again make sure all the other env variables are correct too. 
 ```
 - name: MONOLITH_URL
   value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com (your ALB name would be different)
@@ -145,7 +145,7 @@ Targest showing Healthy on ALB
 kubectl get pods
 kubectl logs <pod name 1> (there should be 4 pods)
 ```
-12. Navigate to the S3 URL and press the like button, as soon as you press the button, you would see the POST with a success of 200 show up and with the message "Like processed." In the next step, we will setup Fluentd with CloudWatch and you can observe the message show up in CloudWatch.
+12. Navigate to the S3 URL and press the like button, you may see the POST with a success of 200 show up and with the message "Like processed." I said you "may" because due to the healthcheck, logs are quite verbose. In the next lab, when we configure CloudWatch with fluentd, you would be able to search for the text in the log groups that are generated. 
 
 13. If you have time, you can now remove the old like endpoint from the monolith now that it is no longer seeing production use.
 
