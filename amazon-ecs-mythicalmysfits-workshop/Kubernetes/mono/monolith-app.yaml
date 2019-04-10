@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mythical-mysfits-eks
-          image: "PUT_YOUR_MONOLITHIC_IMAGE_ECR_ARN"
+          image: PUT_YOUR_MONOLITHIC_IMAGE_ECR_ARN
           imagePullPolicy: Always
           ports:
             - containerPort: 80
