@@ -50,7 +50,7 @@ Copy the personal access token and save it in a secure place.
 
 Use the `codepipeline.yaml` CloudFormation template to create the CodePipeline resources.
 
-In the CloudFormation template parameters, enter your Github username and personal access token you create in the previous step.
+In the CloudFormation template parameters, enter your Github username and personal access token you create in the previous step. 
 
 Wait for the status to change from `CREATE_IN_PROGRESS` to `CREATE_COMPLETE` before moving on to the next step.
 
