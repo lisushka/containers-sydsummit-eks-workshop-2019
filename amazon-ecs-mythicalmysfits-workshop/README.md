@@ -19,11 +19,11 @@ That's why we've hired you to be our first Full Stack Engineer. We need a more s
 
 ### Learning Paths
 
-This is EKS part of a single workshop running at AWS Sydney Summit. You can either run the ECS/Fargate workshop or the EKS workshop which is this one:
+This is EKS part of a single workshop running at AWS Sydney Summit. 
 
-* [EKS workshop](workshop-1/) [This lab]
+**[EKS workshop](workshop-1/)**
 
-To go with the ECS option, [ECS and Fargate Workshop](https://github.com/vanchee/containers-sydsummit-workshop-2019)
+You have a choice of doing either the ECS/Fargate workshop or the EKS workshop. To go with the ECS option: [ECS and Fargate Workshop](https://github.com/vanchee/containers-sydsummit-workshop-2019)
 
 
 ### Session Times
