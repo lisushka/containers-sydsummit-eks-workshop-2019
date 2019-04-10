@@ -155,9 +155,8 @@ any existing credentials file:
 rm -vf ${HOME}/.aws/credentials
 ```
 
-- We should configure our aws cli with our current region as default:
+- We should configure our aws cli with our current region as default. Ensure that the region you get is **us-west-2**:
 ```
-sudo yum install jq
 export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
 echo "export AWS_REGION=${AWS_REGION}" >> ~/.bash_profile
 aws configure set default.region ${AWS_REGION}
