@@ -638,10 +638,8 @@ At this point, you should have a working container for the monolith codebase sto
 
 [*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)
 
-## [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS
+## Please now proceed to [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS
 
-
-**Go to: [*Lab 2*](Lab2.adoc)**
 
 
 

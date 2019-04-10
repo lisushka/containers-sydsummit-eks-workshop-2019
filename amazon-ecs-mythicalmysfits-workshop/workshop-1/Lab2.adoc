@@ -232,4 +232,4 @@ service "mythical-mysfits-eks" deleted
 ### Checkpoint:
 Nice work!  You've created a kubernetes service and used a deployment the monolith container using ECS.  
 
-Now that we have our containers deployed to Amazon EKS we can continue with the workshop. Go https://github.com/kmhabib/containers-sydsummit-eks-workshop-2019/blob/master/amazon-ecs-mythicalmysfits-workshop/README.md[back] and start lab 3. 
+Now that we have our containers deployed to Amazon EKS we can continue with the workshop. You can start Lab3.md[lab 3] or go https://github.com/kmhabib/containers-sydsummit-eks-workshop-2019/blob/master/amazon-ecs-mythicalmysfits-workshop/README.md[back] to the main page and start lab 3 from there.
