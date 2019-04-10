@@ -89,9 +89,11 @@ spec:
 ----
 +
 
-5. Replace the ENV variable with image value with the exact ECR ARN that you built in the previous lab for your monolith image and your DynamoDB Tablename. 
+5. Replace the ENV variable with image value with the exact ECR ARN that you built in the previous lab for your monolith image and your DynamoDB Tablename.
 
-6. Apply your manifest by running this command in your Cloud9 terminal:
+6. Within the IAM console, open the EKS node group role (IAM role with 'eksctl-mythicalmysfits-nodegroup' prefix) and add a new inline policy that permits the dynamodb:Scan action against all table resources.
+
+7. Apply your manifest by running this command in your Cloud9 terminal:
 +
 [source,shell]
 ----
@@ -104,7 +106,7 @@ deployment.apps/mythical-mysfits-eks created
 service/mythical-mysfits-eks created
 ....
 +
-7. As you can see above this manifest created and configured 1 deployment and 1 service for your monolith app..
+8. As you can see above this manifest created and configured 1 deployment and 1 service for your monolith app..
 +
 [options="header"]
 |=======================
@@ -121,7 +123,7 @@ and a policy by which to access them.
 ReplicaSets.
 |=======================
 +
-8. Now that the scheduler knows that you want to run this application it will
+9. Now that the scheduler knows that you want to run this application it will
    find available *disk*, *cpu* and *memory* and will place the jobs. Let's
    watch as they get provisioned.
 +
@@ -137,7 +139,7 @@ mythical-mysfits-eks-7c8d764676-2zhfd      1/1       Running   0          21s
 mythical-mysfits-eks-7c8d764676-hrs85      1/1       Running   0          21s
 ....
 +
-9. Once the *STATUS* changes to *Running* for  your container we can
+10. Once the *STATUS* changes to *Running* for  your container we can
    then load the services and navigate to the exposed application (you will
    need to ctrl-c since its watching).
 +
@@ -154,11 +156,11 @@ PORT(S)        AGE       SELECTOR
 80:32016/TCP   1m        app=mythical-mysfits-eks 
 ....
 +
-10. Here we can see that we're exposing the *frontend* using an ELB which is
+11. Here we can see that we're exposing the *frontend* using an ELB which is
    available at the *EXTERNAL-IP* field. Copy and paste this into a new browser
    tab.
 
-11. Issue a curl command
+12. Issue a curl command
 +
 [source,shell]
 ----
@@ -189,18 +191,18 @@ curl -m3 -v $ELB
 ....
 +
 
-12. if you see the text saying, *nothing to see here, try /mysfits*, then your pod/container is up and running. Do a curl again and append /mysfits after the previous curl command. You should see the output from the DynamoDB table. 
+13. if you see the text saying, *nothing to see here, try /mysfits*, then your pod/container is up and running. Do a curl again and append /mysfits after the previous curl command. You should see the output from the DynamoDB table. 
 
-13. Navigate to *cd /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web* 
+14. Navigate to *cd /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web* 
 
-14. Take the ELB URL and search for *"mysfitsApiEndpoint"* in the *index.html* file and replace the ELB DNS name *without* any trailing "/". So it should be like:
+15. Take the ELB URL and search for *"mysfitsApiEndpoint"* in the *index.html* file and replace the ELB DNS name *without* any trailing "/". So it should be like:
 +
 ....
  "http://a72403c1a586111e994690e7be669691-148203215.us-west-2.elb.amazonaws.com"
 ....
 +
 
-15. Now upload this new file to S3. Make sure you are in this directory: /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web
+16. Now upload this new file to S3. Make sure you are in this directory: /home/ec2-user/environment/containers-sydsummit-eks-workshop-2019/amazon-ecs-mythicalmysfits-workshop/workshop-1/web
 ```
 aws s3 ls
 ```
@@ -213,7 +215,7 @@ image::images/S3Permissions.png[S3 permissions]
 
 Note: Your bucket name will be different. If the email address doesn't work, go to S3 console and give yourself full access to the file
 
-16. now go and see your S3 website, it would have the URL format like: http://BUCKET_NAME.s3-website.us-west-2.amazonaws.com/
+17. now go and see your S3 website, it would have the URL format like: http://BUCKET_NAME.s3-website.us-west-2.amazonaws.com/
 
 For e.g. http://mythical-mysfits-core-mythicalbucket-6b9pvvt40bqj.s3-website.us-west-2.amazonaws.com/
 
