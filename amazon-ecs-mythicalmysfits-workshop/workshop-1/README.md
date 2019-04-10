@@ -280,7 +280,7 @@ default       Active    12m
 kube-public   Active    12m
 kube-system   Active    12m
 ```
-verify 2x nodes have been created
+verify 2 x Nodes have been created. These are your 2 EC2 instances that have been spun up by EKSCTL. You can verify this on the console
 ```
 kubectl get nodes 
 
@@ -477,7 +477,7 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
     </pre>
     </details>
 
-    To see the benefit of your optimizations, you'll need to first rebuild the monolith image using your new Dockerfile (use the same build command at the beginning of step 5).  Then, introduce a change in `mythicalMysfitsService.py` (e.g. add another arbitrary comment) and rebuild the monolith image again.  Docker cached the requirements during the first rebuild after the re-ordering and references cache during this second rebuild.  You should see something similar to below:
+    To see the benefit of your optimizations, you'll need to first rebuild the monolith image using your new Dockerfile (use the same build command at the beginning of step 2 "docker build -t monolith-service .".  Then, introduce a change in `mythicalMysfitsService.py` (e.g. add another arbitrary comment) and rebuild the monolith image again.  Docker cached the requirements during the first rebuild after the re-ordering and references cache during this second rebuild.  You should see something similar to below:
 
     <pre>
     Step 6/11 : RUN pip install -r ./requirements.txt
