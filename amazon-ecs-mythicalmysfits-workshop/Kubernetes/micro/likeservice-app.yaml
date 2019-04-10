@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mythical-mysfits-like
-          image: 521538833543.dkr.ecr.us-west-2.amazonaws.com/mythic-like-gx43rhyis41m:like
+          image: "PUT_YOUR_LIKE_IMAGE_ECR_ARN"
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -27,7 +27,7 @@ spec:
             - name: AWS_DEFAULT_REGION
               value: us-west-2
             - name: MONOLITH_URL
-              value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com
+              value: "PUT_THE_DNS_NAME_OF_YOUR_ALB"
 ---
 apiVersion: v1
 kind: Service

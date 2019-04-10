@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mythical-mysfits-eks
-          image: 521538833543.dkr.ecr.us-west-2.amazonaws.com/mythic-mono-1mlmxg9hhf7v3:latest
+          image: "PUT_YOUR_MONOLITHIC_IMAGE_ECR_ARN"
           imagePullPolicy: Always
           ports:
             - containerPort: 80

@@ -59,12 +59,12 @@ def likeMysfit(mysfit_id):
     flaskResponse.headers["Content-Type"] = "application/json"
     return flaskResponse
 
-@app.route("/mysfits/<mysfit_id>/fulfill-like", methods=['POST'])
-def fulfillLikeMysfit(mysfit_id):
-    serviceResponse = mysfitsTableClient.likeMysfit(mysfit_id)
-    flaskResponse = Response(serviceResponse)
-    flaskResponse.headers["Content-Type"] = "application/json"
-    return flaskResponse
+# @app.route("/mysfits/<mysfit_id>/fulfill-like", methods=['POST'])
+# def fulfillLikeMysfit(mysfit_id):
+#     serviceResponse = mysfitsTableClient.likeMysfit(mysfit_id)
+#     flaskResponse = Response(serviceResponse)
+#     flaskResponse.headers["Content-Type"] = "application/json"
+#     return flaskResponse
 
 # indicate that the provided mysfit should be marked as adopted.
 @app.route("/mysfits/<mysfit_id>/adopt", methods=['POST'])
