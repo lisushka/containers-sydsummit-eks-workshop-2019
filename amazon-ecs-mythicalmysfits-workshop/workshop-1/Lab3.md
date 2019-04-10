@@ -120,12 +120,20 @@ aws s3 cp ../../workshop-1/web/index.html s3://mythical-mysfits-core-mythicalbuc
 ```
 ALB can take 5-10 mins to be in-service
 
-8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. Again make sure all the other env variables are correct too. 
+8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. Again make sure all the other env variables are correct too. Also make sure your nolikeservice-app.yaml file also has the correct ECR ARN and correct DynamoDB name
 ```
-- name: MONOLITH_URL
-  value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com (your ALB name would be different)
+- name: mythical-mysfits-like
+          image: PUT_YOUR_LIKE_IMAGE_ECR_ARN
+-  env:
+            - name: DDB_TABLE_NAME
+              value: PUT_YOUR_DYNAMODB_TABLENAME
+            - name: AWS_DEFAULT_REGION
+              value: us-west-2
+            - name: MONOLITH_URL
+              value: SAMPLE.us-west-2.elb.amazonaws.com (your ALB name would be different)
+
 ```
-**ALSO MAKE SURE YOUR DynamoDB table name and your ECR Repos are also pointing to the correct locations**
+**MAKE SURE YOUR DynamoDB table name and your ECR Repos are also pointing to the correct locations in both your likeservice-app.yaml and nolikeservice-app.yaml files**
 
 9. Now deploy both the "like" and "nolike" services. 
 ```
