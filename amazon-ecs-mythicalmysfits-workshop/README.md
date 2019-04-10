@@ -23,7 +23,7 @@ This is EKS part of a single workshop running at AWS Sydney Summit. You can eith
 
 * [EKS workshop](workshop-1/) [This lab]
 
-To go with the ECS option, [ECS and Fargate Workshop](https://github.com/vanchee/containers-sydsummit-workshop-2019/tree/master/all-lab-modules/lab2a-option1-ecs-labs)
+To go with the ECS option, [ECS and Fargate Workshop](https://github.com/vanchee/containers-sydsummit-workshop-2019)
 
 
 ### Session Times
