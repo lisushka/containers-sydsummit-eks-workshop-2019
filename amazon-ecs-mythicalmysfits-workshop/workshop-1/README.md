@@ -22,7 +22,7 @@ These labs are designed to be completed in sequence, and the full set of instruc
 * **Lab 2:** [Deploy the container using EKS](Lab2.adoc)
 * **Lab 3:** [Incrementally build and deploy more microservices with EKS and ALB Ingress](Lab3.md)
 * **LAB 4:** [Configure CloudWatch Logs](Lab4/README.md)
-* **[OPTIONAL]LAB 5:** [Cofngirue a CI/CD pipeline](Lab5/README.md)
+* **[*OPTIONAL*] LAB 5:** [Cofngirue a CI/CD pipeline](Lab5/README.md)
 * **Cleanup** [Put everything away nicely](#workshop-cleanup)
 
 ### Conventions:
@@ -638,11 +638,11 @@ At this point, you should have a working container for the monolith codebase sto
 
 
 
-**Please now proceed to [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS**
-**or to go [*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)**
+**Please now proceed to [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS**    
+**or go [*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)**
 
 
-
+-----
 ## Workshop Cleanup
 
 This is really important because if you leave stuff running in your account, it will continue to generate charges.  Certain things were created by CloudFormation and certain things were created manually throughout the workshop.  Follow the steps below to make sure you clean up properly.
