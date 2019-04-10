@@ -112,19 +112,25 @@ Call this object nolike-app.yaml (there should be a sample file in the folder)
 ```
 kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o alb-ingress[a-zA-Z0-9-]+)
 ```
+You may see some errors show up about "target not found". That's because we haven't created the backend services yet. Once we create that, you should see the rules and targets created in your ALB.
+
 (Example: 07f66c03-default-mythicalm-761d-1712518784.us-west-2.elb.amazonaws.com) and modify the index.html file and upload to s3 again
+```
 aws s3 cp ../../workshop-1/web/index.html s3://mythical-mysfits-core-mythicalbucket-xxx/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+```
 ALB can take 5-10 mins to be in-service
 
 8. Take the ALB DNS name and pass it in as environment variable in the *likeservice-app.yaml* file. 
 ```
 - name: MONOLITH_URL
-  value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com
+  value: 07f66c03-default-mythicalm-761d-1925565151.us-west-2.elb.amazonaws.com (your ALB name would be different)
 ```
+**ALSO MAKE SURE YOUR DynamoDB table name and your ECR Repos are also pointing to the correct locations**
+
 9. Now deploy both the "like" and "nolike" services. 
 ```
 kubectl apply -f likeservice-app.yaml 
-kubectl apply -f nolikeservice-app
+kubectl apply -f nolikeservice-app.yaml
 ```
 
 10. Check your ALB on the console, it will take another 2 minutes or so for these two backend services to show as "healthy" in the target group. 

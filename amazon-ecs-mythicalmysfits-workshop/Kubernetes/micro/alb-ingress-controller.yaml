@@ -41,7 +41,7 @@ spec:
             # Name of your cluster. Used when naming resources created
             # by the ALB Ingress Controller, providing distinction between
             # clusters.
-            - --cluster-name="ENTER_YOUR_CLUSTER_NAME_HERE"
+            - --cluster-name=ENTER_YOUR_CLUSTER_NAME_HERE
 
             # AWS VPC ID this ingress controller will use to create AWS resources.
             # If unspecified, it will be discovered from ec2metadata.
