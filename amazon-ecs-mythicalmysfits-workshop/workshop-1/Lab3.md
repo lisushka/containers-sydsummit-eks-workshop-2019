@@ -178,6 +178,6 @@ kubectl logs <pod name 1> (there should be 4 pods)
 15. Now make one last deployment for the monolith to refer to this new container image URI (this process should be familiar now, and you can probably see that it makes sense to leave this drudgery to a CI/CD service in production), update the monolith service to use the new deployment, and make sure the app still functions as before.
 
 ### Checkpoint:
-Congratulations, you've successfully rolled out the like microservice from the monolith.  If you have time, try repeating this lab to break out the adoption microservice.  Otherwise, please remember to follow the steps below in the **Workshop Cleanup** to make sure all assets created during the workshop are removed so you do not see unexpected charges after today.
+Congratulations, you've successfully rolled out the like microservice from the monolith.  If you have time, try repeating this lab to break out the adoption microservice.  You can now proceed to [Lab 4](Lab4/README.md#workshop-cleanup) and setup your application monitoring with [CloudWatch](https://aws.amazon.com/cloudwatch/) and [fluentd](https://www.fluentd.org/). Otherwise, please remember to follow the steps  in the **Workshop Cleanup** to make sure all assets created during the workshop are removed so you do not see unexpected charges after today.
 
 Go [back](README.md)

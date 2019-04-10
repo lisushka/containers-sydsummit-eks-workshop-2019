@@ -583,7 +583,7 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
 
     In the sample output above, the container was assigned the name "awesome_varahamihira".  Names are arbitrarily assigned.  You can also pass the docker run command a name option if you want to specify the running name.  You can read more about it in the [Docker run reference](https://docs.docker.com/engine/reference/run/).  Kill the container using `docker kill` now that we know it's working properly.
 
-4. Now that you have a working Docker image, tag and push the image to [Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/).  ECR is a fully-managed Docker container registry that makes it easy to store, manage, and deploy Docker container images. In the next lab, we'll use ECS to pull your image from ECR.
+4. Now that you have a working Docker image, tag and push the image to [Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/).  ECR is a fully-managed Docker container registry that makes it easy to store, manage, and deploy Docker container images. In the next lab, we'll use EKS to pull your image from ECR.
 
     In the AWS Management Console, navigate to [Repositories](https://console.aws.amazon.com/ecs/home#/repositories) in the ECS dashboard.  You should see repositories for the monolith service and like service.  These were created by CloudFormation and named like <code><b><i>STACK_NAME</i></b>-mono-xxx</code> and <code><b><i>STACK_NAME</i></b>-like-xxx</code> where ***STACK_NAME*** is the name of the CloudFormation stack (the stack name may be truncated).
 
@@ -634,16 +634,14 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
     ![ECR push complete](images/01-ecr-push-complete.png)
 
 ### Checkpoint:
-At this point, you should have a working container for the monolith codebase stored in an ECR repository and ready to deploy with ECS in the next lab.
+At this point, you should have a working container for the monolith codebase stored in an ECR repository and ready to deploy with EKS in the next lab.
 
-[*^ back to the top*](#monolith-to-microservices-with-docker-and-aws-fargate)
+[*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)
 
 ## [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS
 
 
-
-
-##Go to: [*Lab 2*](Lab2.adoc)
+**Go to: [*Lab 2*](Lab2.adoc)**
 
 
 
