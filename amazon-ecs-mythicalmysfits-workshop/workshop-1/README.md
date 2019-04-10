@@ -638,19 +638,13 @@ At this point, you should have a working container for the monolith codebase sto
 
 [*^ back to the top*](#monolith-to-microservices-with-docker-and-aws-fargate)
 
-## Lab 2 - Deploy your container using ECR/EKS
-
-
-![Lab 2 Architecture](images/02-arch.png)
-
-Go to: [*Lab 2*](Lab2.adoc)
+## [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS
 
 
 
-### Checkpoint:
-Nice work!  You've created a kubernetes service and used a deployment the monolith container using ECS.  
 
-[*^ back to the top*](#monolith-to-microservices-with-docker-and-aws-fargate)
+##Go to: [*Lab 2*](Lab2.adoc)
+
 
 
 
@@ -661,10 +655,12 @@ This is really important because if you leave stuff running in your account, it 
 
 Delete manually created resources throughout the labs:
 
-* ECS service(s) - first update the desired task count to be 0.  Then delete the ECS service itself.
+* EKS service(s)
+* any roles that you created
 * ECR - delete any Docker images pushed to your ECR repository.
 * CloudWatch logs groups
-* ALBs and associated target groups
+* ALBs and associated target groups (if they didn't get deleted when you deleted the service)
+* check DRIFT on your CF stack before you delete and resolve. 
 
 Finally, [delete the CloudFormation stack](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html) launched at the beginning of the workshop to clean up the rest.  If the stack deletion process encountered errors, look at the Events tab in the CloudFormation dashboard, and you'll see what steps failed.  It might just be a case where you need to clean up a manually created asset that is tied to a resource goverened by CloudFormation. You can also use the "Drift" detection feature in Cloudformation to figure out what has drifted from the configuration once you started. 
 
