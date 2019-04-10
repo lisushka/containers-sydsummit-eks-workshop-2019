@@ -123,7 +123,7 @@ You will be deploying infrastructure on AWS which will have an associated cost. 
 ### Attach the IAM role to your Workspace
 ---
 
-1. Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=aws-cloud9-Project-mythical-mysfits-fargate-*;sort=desc:launchTime)
+1. Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=aws-cloud9-Project-mythical-mysfits-eks-*;sort=desc:launchTime)
 2. Select the instance, then choose **Actions / Instance Settings / Attach/Replace IAM Role**
 ![c9instancerole](images/c9instancerole.png)
 3. Choose **eksworkshop-admin** from the **IAM Role** drop down, and select **Apply**
