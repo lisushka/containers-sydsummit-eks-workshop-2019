@@ -552,7 +552,7 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
     In the tab you have the running container, type **Ctrl-C** to stop the running container.  Notice, the container ran in the foreground with stdout/stderr printing to the console.  In a production environment, you would run your containers in the background and configure some logging destination.  We'll worry about logging later, but you can try running the container in the background using the -d flag.
 
     <pre>
-    $ docker run -d -p 8000:80 -e AWS_DEFAULT_REGION=<b><i>REGION</i></b> -e DDB_TABLE_NAME=<b><i>TABLE_NAME</i></b> monolith-service
+    $ docker run -d -p 8000:80 -e AWS_DEFAULT_REGION=<b><i>us-west-2</i></b> -e DDB_TABLE_NAME=<b><i>TABLE_NAME</i></b> monolith-service
     </pre>
 
     List running docker containers with the [docker ps](https://docs.docker.com/engine/reference/commandline/ps/) command to make sure the monolith is running.
@@ -570,7 +570,7 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
     Here's sample output from the above commands:
 
     <pre>
-    $ docker run -d -p 8000:80 -e AWS_DEFAULT_REGION=<b><i>REGION</i></b> -e DDB_TABLE_NAME=<b><i>TABLE_NAME</i></b> monolith-service
+    $ docker run -d -p 8000:80 -e AWS_DEFAULT_REGION=<b><i>us-west-2</i></b> -e DDB_TABLE_NAME=<b><i>TABLE_NAME</i></b> monolith-service
     51aba5103ab9df25c08c18e9cecf540592dcc67d3393ad192ebeda6e872f8e7a
     $ docker ps
     CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                  NAMES
