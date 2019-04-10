@@ -45,4 +45,5 @@ Select the region that is mentioned in `fluentd.yml` to browse the Cloudwatch Lo
 ### Checkpoint:
 Congratulations, you've successfully rolled out the like microservice from the monolith and observed the logs in CloudWatch.  If you have time, try to do the CI/CD lab by going to this link: [Lab 5](Lab5/README.md). Otherwise, please remember to follow the steps  in the **[Workshop Cleanup](README.md#workshop-cleanup)** to make sure all assets created during the workshop are removed so you do not see unexpected charges after today.
 
-Go [back](README.md)
+**Go to [Lab 4](Lab5/README.md)**
+**To go [back](README.md) to main menu**

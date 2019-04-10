@@ -636,12 +636,10 @@ The Mythical Mysfits adoption agency infrastructure has always been running dire
 ### Checkpoint:
 At this point, you should have a working container for the monolith codebase stored in an ECR repository and ready to deploy with EKS in the next lab.
 
-[*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)
-
-## Please now proceed to [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS
 
 
-
+**Please now proceed to [*Lab 2*](Lab2.adoc) - Deploy your container using ECR/EKS**
+**or to go [*^ back to the top*](#monolith-to-microservices-with-docker-and-amazon-eks)**
 
 
 

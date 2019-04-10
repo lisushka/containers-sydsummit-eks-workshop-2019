@@ -180,4 +180,5 @@ kubectl logs <pod name 1> (there should be 4 pods)
 ### Checkpoint:
 Congratulations, you've successfully rolled out the like microservice from the monolith.  If you have time, try repeating this lab to break out the adoption microservice.  You can now proceed to [Lab 4](Lab4/README.md) and setup your application monitoring with [CloudWatch](https://aws.amazon.com/cloudwatch/) and [fluentd](https://www.fluentd.org/). Otherwise, please remember to follow the steps  in the **[Workshop Cleanup](README.md#workshop-cleanup)** to make sure all assets created during the workshop are removed so you do not see unexpected charges after today.
 
-Go [back](README.md)
+**Go to [Lab 4](Lab4/README.md)**
+**To go [back](README.md) to main menu**
